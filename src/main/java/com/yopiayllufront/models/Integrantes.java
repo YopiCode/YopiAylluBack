@@ -10,7 +10,7 @@ public class Integrantes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @ManyToOne
-    @JoinColumn(name = "idfamilia")
+    @JoinColumn(name = "idfamilia",nullable = false)
     private Familias familias;
     @Column(nullable = false, length = 20)
     private String nombres;
@@ -26,4 +26,6 @@ public class Integrantes {
     private boolean discapacitado;
     @Column(nullable = false)
     private boolean mascota;
+    @Column(nullable = false)
+    private String roles;
 }
