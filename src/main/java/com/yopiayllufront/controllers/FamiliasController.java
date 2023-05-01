@@ -1,5 +1,6 @@
 package com.yopiayllufront.controllers;
 
+import com.yopiayllufront.models.Errores;
 import com.yopiayllufront.models.Familias;
 import com.yopiayllufront.repositories.FamiliasRepository;
 import com.yopiayllufront.services.FamiliasService;
@@ -15,7 +16,6 @@ import java.util.Map;
 @RestController
 public class FamiliasController {
 
-    HashMap<String, Object> json = new HashMap<>();
 
 
     @Autowired
@@ -29,29 +29,12 @@ public class FamiliasController {
 
     @PostMapping("registrar")
     public HashMap<String, Object> registrar_familiar(@RequestBody Familias familias){
-        if (familias == null){
-            json.put("error",true);
-            json.put("Detalle","Error de Registro");
-        }else {
-            json.put("error",false);
-            json.put("Detalle","Registro Exitoso");
-            familiaRepository.save(familias);
-        }
-        return json;
+        return familiasService.registrar_familia(familias);
     }
 
     @PostMapping("ingresar")
-    public Map<String, Object> ingresar(@RequestBody Familias familias){
-
-        if (familias == null){
-            json.put("error",true);
-            json.put("Detalle","Error de Credenciales");
-        }else {
-            json.put("error",false);
-            json.put("Detalle","Credenciales Correctas");
-            familiasService.validarLogin(familias.getCodigofamiliar(),familias.getContrasena());
-        }
-        return json;
+    public Errores ingresar(@RequestBody Familias familias){
+        return familiasService.login_familia(familias);
     }
 
 

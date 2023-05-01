@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 public interface FamiliasRepository extends JpaRepository<Familias, Integer> {
 
     boolean existsByCodigofamiliarAndAndContrasena(int codigofamiliar, int contrasena);
-
+    boolean existsByCodigofamiliar(int codigofamiliar);
     Familias findByCodigofamiliar(int Codigofamiliar);
 
 

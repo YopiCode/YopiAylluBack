@@ -1,34 +1,48 @@
 package com.yopiayllufront.services;
 
+import com.yopiayllufront.models.Errores;
+import com.yopiayllufront.models.Familias;
 import com.yopiayllufront.repositories.FamiliasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class FamiliasService {
 
+    private HashMap<String, Object> json = new HashMap<>();
+    private Errores errores = new Errores();
+
     @Autowired
     FamiliasRepository familiaRepository;
 
-    public Map<String, Object> validarLogin(int codigo_familiar, int contrasena){
+    public Errores login_familia(Familias familias){
 
-        Map<String, Object> json = new HashMap<>();
-        boolean aux = familiaRepository.existsByCodigofamiliarAndAndContrasena(codigo_familiar,contrasena);
+        boolean aux = familiaRepository.existsByCodigofamiliarAndAndContrasena(familias.getCodigofamiliar(),familias.getContrasena());
         if (aux == true){
-            json.put("error",false);
-            json.put("detalles",null);
+            errores.setError(false);
+            errores.setDetalle("Credenciales Correctas");
         }else {
-            json.put("error",true);
-            json.put("detalles","Credenciales erroneas");
+            errores.setError(true);
+            errores.setDetalle("Credenciales Erroneas");
+        }
+        return errores;
+
+    }
+
+    public HashMap<String, Object> registrar_familia(Familias familias){
+
+        if (familias == null){
+            errores.setError(true);
+            errores.setDetalle("Error de Registro");
+        }else {
+            errores.setError(false);
+            errores.setDetalle("Registro Exitoso");
+            familiaRepository.save(familias);
         }
         return json;
 
     }
-
-
-
 
 }

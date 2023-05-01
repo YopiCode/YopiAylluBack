@@ -8,27 +8,50 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class IntegrantesService {
+    private HashMap<String, Object> json = new HashMap<>();
 
     @Autowired
-    IntegrantesRepository integranteRepository;
+    IntegrantesRepository integrantesRepository;
 
     @Autowired
     FamiliasRepository familiasRepository;
 
 
-    public Integrantes integrantes_familia(int codigofamiliar, Integrantes integrantes){
-        Integrantes integrantes1 = integrantes;
-        integrantes1.setFamilias(familiasRepository.findByCodigofamiliar(codigofamiliar));
-        return integrantes1;
+    public Map<String, Object> integrantes_familia(int cod_familiar, Integrantes integrantes){
+
+        boolean aux = familiasRepository.existsByCodigofamiliar(cod_familiar);
+        if (aux == false){
+            json.put("error",true);
+            json.put("detalles","Error al Ingresar Integrantes");
+        }else {
+            integrantes.setFamilias(familiasRepository.findByCodigofamiliar(cod_familiar));
+            json.put("integrantes",integrantes);
+            integrantesRepository.save(integrantes);
+
+        }
+        return json;
     }
 
 
-    public List<Integrantes> getAllIntegrantesByCodigo(int codigo){
-        return integranteRepository.findIntegrantesByFamilias_Codigofamiliar(codigo);
+    public HashMap<String, Object> getAllIntegrantesByCodigo(int codigo_familiar){
+
+        boolean aux = familiasRepository.existsByCodigofamiliar(codigo_familiar);
+        if (aux==false){
+            json.put("error",true);
+            json.put("detalles","Credenciales Erroneas");
+        }else {
+            json.put("codigofamiliar",familiasRepository.findByCodigofamiliar(codigo_familiar).getCodigofamiliar());
+            json.put("nombrefamilia",familiasRepository.findByCodigofamiliar(codigo_familiar).getNombrefamilia());
+            json.put("integrantes",integrantesRepository.findIntegrantesByFamilias_Codigofamiliar(codigo_familiar));
+        }
+
+        return json;
     }
 
 }
