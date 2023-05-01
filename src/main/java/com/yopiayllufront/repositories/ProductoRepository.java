@@ -9,6 +9,9 @@ import java.util.List;
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto,Integer> {
 
-    @Override
-    List<Producto> findAll();
+    List<Producto> searchProductosByFamilias_Codigofamiliar(int cod_familia);
+
+    void deleteById(int id);
+
+
 }
