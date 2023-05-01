@@ -21,6 +21,7 @@ public interface IntegrantesRepository extends JpaRepository<Integrantes, Intege
 
     int countByFamilias_Codigofamiliar(int codigo);
 
+    int countIntegrantesByFamilias_Codigofamiliar(int codigo);
 
 
 

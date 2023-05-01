@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class IntegrantesService {
@@ -23,6 +24,8 @@ public class IntegrantesService {
     @Autowired
     FamiliasRepository familiasRepository;
 
+    private Errores errores = new Errores();
+
 
     public Map<String, Object> integrantes_familia(int cod_familiar, Integrantes integrantes){
 
@@ -31,7 +34,11 @@ public class IntegrantesService {
             json.put("error",true);
             json.put("detalles","Error al Ingresar Integrantes");
         }else {
+            int var = integrantesRepository.countIntegrantesByFamilias_Codigofamiliar(cod_familiar);
             integrantes.setFamilias(familiasRepository.findByCodigofamiliar(cod_familiar));
+            if (var ==0){
+               integrantes.setLider(true);
+            }
             json.put("integrantes",integrantes);
             integrantesRepository.save(integrantes);
 
@@ -47,9 +54,11 @@ public class IntegrantesService {
             json.put("error",true);
             json.put("detalles","Credenciales Erroneas");
         }else {
-            json.put("codigofamiliar",familiasRepository.findByCodigofamiliar(codigo_familiar).getCodigofamiliar());
-            json.put("nombrefamilia",familiasRepository.findByCodigofamiliar(codigo_familiar).getNombrefamilia());
-            json.put("integrantes",integrantesRepository.findIntegrantesByFamilias_Codigofamiliar(codigo_familiar));
+
+            Familias familias = familiasRepository.findByCodigofamiliar(codigo_familiar);
+            json.put("codigofamiliar",familias.getCodigofamiliar());
+            json.put("nombrefamilia",familias.getNombrefamilia());
+            json.put("integrantes",obtener_familiares(codigo_familiar));
         }
 
         return json;
@@ -64,7 +73,10 @@ public class IntegrantesService {
             errores.setError(true);
             return errores;
         }else {
-            return integrantesRepository.findIntegrantesByFamilias_Codigofamiliar(codigo_familiar);
+            return integrantesRepository.findIntegrantesByFamilias_Codigofamiliar(codigo_familiar).stream().map(item -> {
+                item.setFamilias(null);
+                return item;
+            });
         }
     }
 
@@ -72,14 +84,13 @@ public class IntegrantesService {
 
         Integrantes aux = integrantesRepository.searchById(idintegrante);
         if (aux==null){
-            Errores errores = new Errores();
             errores.setDetalle("Error de Peticion");
             errores.setError(true);
-            return errores;
         }else {
-            integrantesRepository.deleteById(idintegrante);
-            return aux;
+            errores.setDetalle("Peticion Aceptada");
+            errores.setError(false);
         }
+        return errores;
 
 
     }

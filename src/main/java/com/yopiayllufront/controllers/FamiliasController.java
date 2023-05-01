@@ -29,7 +29,7 @@ public class FamiliasController {
     FamiliasRepository familiaRepository;
 
     @PostMapping("registrar")
-    public HashMap<String, Object> registrar_familiar(@RequestBody Familias familias){
+    public Errores registrar_familiar(@RequestBody Familias familias){
         return familiasService.registrar_familia(familias);
     }
 

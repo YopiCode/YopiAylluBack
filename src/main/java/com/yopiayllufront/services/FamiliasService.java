@@ -36,7 +36,7 @@ public class FamiliasService {
 
     }
 
-    public HashMap<String, Object> registrar_familia(Familias familias){
+    public Errores registrar_familia(Familias familias){
 
         if (familias == null){
             errores.setError(true);
@@ -46,7 +46,7 @@ public class FamiliasService {
             errores.setDetalle("Registro Exitoso");
             familiaRepository.save(familias);
         }
-        return json;
+        return errores;
 
     }
 
