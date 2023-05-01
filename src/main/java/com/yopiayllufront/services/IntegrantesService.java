@@ -1,5 +1,6 @@
 package com.yopiayllufront.services;
 
+import com.yopiayllufront.models.Errores;
 import com.yopiayllufront.models.Familias;
 import com.yopiayllufront.models.Integrantes;
 import com.yopiayllufront.repositories.FamiliasRepository;
@@ -52,6 +53,35 @@ public class IntegrantesService {
         }
 
         return json;
+    }
+
+    public Object obtener_familiares(int codigo_familiar){
+
+        boolean aux = familiasRepository.existsByCodigofamiliar(codigo_familiar);
+        if (aux==false){
+            Errores errores = new Errores();
+            errores.setDetalle("Error de Peticion");
+            errores.setError(true);
+            return errores;
+        }else {
+            return integrantesRepository.findIntegrantesByFamilias_Codigofamiliar(codigo_familiar);
+        }
+    }
+
+    public Object eliminar_integrante(int idintegrante){
+
+        Integrantes aux = integrantesRepository.searchById(idintegrante);
+        if (aux==null){
+            Errores errores = new Errores();
+            errores.setDetalle("Error de Peticion");
+            errores.setError(true);
+            return errores;
+        }else {
+            integrantesRepository.deleteById(idintegrante);
+            return aux;
+        }
+
+
     }
 
 }

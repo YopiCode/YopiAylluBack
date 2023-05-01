@@ -8,10 +8,7 @@ import com.yopiayllufront.repositories.FamiliasRepository;
 import com.yopiayllufront.repositories.IntegrantesRepository;
 import com.yopiayllufront.services.IntegrantesService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,12 +29,19 @@ public class IntegrantesController {
         return integrantesService.integrantes_familia(aux.getCodigofamiliar(),aux.getModel());
     }
 
+    @GetMapping("familia")
+    public Object Obtener_integrantes(@RequestBody Familias familias){
+        return integrantesService.obtener_familiares(familias.getCodigofamiliar());
+    }
+
     @GetMapping("home")
     public Map<String, Object> integrantes_familia(@RequestBody Familias familias){
         return integrantesService.getAllIntegrantesByCodigo(familias.getCodigofamiliar()) ;
     }
 
-
-
+    @DeleteMapping("familia")
+    private Object delete_familia(@RequestBody Integrantes integrantes){
+        return integrantesService.eliminar_integrante(integrantes.getId());
+    }
 
 }

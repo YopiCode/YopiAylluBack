@@ -2,7 +2,9 @@ package com.yopiayllufront.services;
 
 import com.yopiayllufront.models.Errores;
 import com.yopiayllufront.models.Familias;
+import com.yopiayllufront.models.Integrantes;
 import com.yopiayllufront.repositories.FamiliasRepository;
+import com.yopiayllufront.repositories.IntegrantesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,9 @@ public class FamiliasService {
 
     @Autowired
     FamiliasRepository familiaRepository;
+
+    @Autowired
+    IntegrantesRepository integrantesRepository;
 
     public Errores login_familia(Familias familias){
 
@@ -43,6 +48,22 @@ public class FamiliasService {
         }
         return json;
 
+    }
+
+    public Object detalles_Hogar(int codigo){
+        boolean aux = familiaRepository.existsByCodigofamiliar(codigo);
+        if (aux == false){
+            errores.setError(true);
+            errores.setDetalle("Error detalle Hogar");
+            return errores;
+        }else {
+            Integrantes integrantes =  integrantesRepository.findByLiderAndFamilias_Codigofamiliar(true, codigo);
+            json.put("cantidad",integrantesRepository.countByFamilias_Codigofamiliar(codigo));
+            json.put("codigofamiliar",integrantes.getFamilias().getCodigofamiliar());
+            json.put("lider",integrantes.getNombres());
+            json.put("nombrefamilia",integrantes.getFamilias().getNombrefamilia());
+            return json;
+        }
     }
 
 }
