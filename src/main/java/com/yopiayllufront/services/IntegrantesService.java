@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class IntegrantesService {
@@ -26,7 +27,7 @@ public class IntegrantesService {
     }
 
 
-    public ArrayList<Integrantes> getAllIntegrantesByCodigo(int codigo){
+    public List<Integrantes> getAllIntegrantesByCodigo(int codigo){
         return integranteRepository.findIntegrantesByFamilias_Codigofamiliar(codigo);
     }
 

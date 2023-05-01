@@ -6,12 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public interface IntegrantesRepository extends JpaRepository<Integrantes, Integer> {
 
 
-    ArrayList<Integrantes> findIntegrantesByFamilias_Codigofamiliar(int codigo);
+    List<Integrantes> findIntegrantesByFamilias_Codigofamiliar(int codigo);
 
 
 

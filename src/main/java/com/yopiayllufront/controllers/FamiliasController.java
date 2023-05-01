@@ -9,10 +9,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 public class FamiliasController {
+
+    HashMap<String, Object> json = new HashMap<>();
+
 
     @Autowired
     IntegrantesService integrantesService;
@@ -24,13 +28,30 @@ public class FamiliasController {
     FamiliasRepository familiaRepository;
 
     @PostMapping("registrar")
-    public Familias registrar_familiar(@RequestBody Familias familias){
-        return familiaRepository.save(familias);
+    public HashMap<String, Object> registrar_familiar(@RequestBody Familias familias){
+        if (familias == null){
+            json.put("error",true);
+            json.put("Detalle","Error de Registro");
+        }else {
+            json.put("error",false);
+            json.put("Detalle","Registro Exitoso");
+            familiaRepository.save(familias);
+        }
+        return json;
     }
 
     @PostMapping("ingresar")
-    public Map<String, Object> ingresar(@RequestBody Map<String, Object> familias){
-        return familiasService.validarLogin((int)familias.get("codigofamiliar"),(int)familias.get("contrasena"));
+    public Map<String, Object> ingresar(@RequestBody Familias familias){
+
+        if (familias == null){
+            json.put("error",true);
+            json.put("Detalle","Error de Credenciales");
+        }else {
+            json.put("error",false);
+            json.put("Detalle","Credenciales Correctas");
+            familiasService.validarLogin(familias.getCodigofamiliar(),familias.getContrasena());
+        }
+        return json;
     }
 
 
