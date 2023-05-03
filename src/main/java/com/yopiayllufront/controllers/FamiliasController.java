@@ -6,10 +6,7 @@ import com.yopiayllufront.repositories.FamiliasRepository;
 import com.yopiayllufront.services.FamiliasService;
 import com.yopiayllufront.services.IntegrantesService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,9 +35,9 @@ public class FamiliasController {
         return familiasService.login_familia(familias);
     }
 
-    @GetMapping("hogar")
-    public Object hogar(@RequestBody Familias familias){
-        return familiasService.detalles_Hogar(familias.getCodigofamiliar());
+    @GetMapping("hogar/{codigo}")
+    public Object hogar(@PathVariable("codigo") int codigofamiliar){
+        return familiasService.detalles_Hogar(codigofamiliar);
     }
 
 

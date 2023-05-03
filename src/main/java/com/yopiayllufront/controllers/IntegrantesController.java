@@ -29,14 +29,14 @@ public class IntegrantesController {
         return integrantesService.integrantes_familia(aux.getCodigofamiliar(),aux.getModel());
     }
 
-    @GetMapping("familia")
-    public Object Obtener_integrantes(@RequestBody Familias familias){
-        return integrantesService.obtener_familiares(familias.getCodigofamiliar());
+    @GetMapping("familia/{codigo}")
+    public Object Obtener_integrantes(@PathVariable("codigo") int codigofamiliar){
+        return integrantesService.obtener_familiares(codigofamiliar);
     }
 
-    @GetMapping("home")
-    public Map<String, Object> integrantes_familia(@RequestBody Familias familias){
-        return integrantesService.getAllIntegrantesByCodigo(familias.getCodigofamiliar()) ;
+    @GetMapping("home/{codigo}")
+    public Map<String, Object> integrantes_familia(@PathVariable("codigo") int codigofamiliar){
+        return integrantesService.getAllIntegrantesByCodigo(codigofamiliar) ;
     }
 
     @DeleteMapping("familia")

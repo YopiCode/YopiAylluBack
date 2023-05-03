@@ -32,11 +32,8 @@ public class RutasService {
         return entityModel.getModel();
     }
 
-    public Object MostrarZona(Familias familias){
-        return rutasRepository.findRutasByFamilias_Codigofamiliar(familias.getCodigofamiliar()).stream().map(item ->{
-            item.setFamilias(null);
-            return item;
-        });
+    public Object MostrarZona(int codigo){
+        return rutasRepository.findRutasByFamilias_Codigofamiliar(codigo).stream().peek(item -> item.setFamilias(null));
     }
 
     public Errores eliminarZona(int id){

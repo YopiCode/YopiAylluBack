@@ -17,7 +17,6 @@ import java.util.HashMap;
 
 @RestController
 public class CroquisController {
-
     @Autowired
     CroquisService croquisService;
 

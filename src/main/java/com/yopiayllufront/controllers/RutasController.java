@@ -22,9 +22,9 @@ public class RutasController {
         return rutasService.reguistroZona(entityModel);
     }
 
-    @GetMapping("zona")
-    public Object obteneRuta(@RequestBody Familias familias){
-        return rutasService.MostrarZona(familias);
+    @GetMapping("zona/{codigo}")
+    public Object obteneRuta(@PathVariable("codigo") int codigofamiliar){
+        return rutasService.MostrarZona(codigofamiliar);
     }
 
     @DeleteMapping("zona")
