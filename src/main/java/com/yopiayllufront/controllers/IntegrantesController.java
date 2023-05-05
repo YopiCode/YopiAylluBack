@@ -1,18 +1,19 @@
 package com.yopiayllufront.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yopiayllufront.models.EntityModel;
-import com.yopiayllufront.models.Familias;
+import com.yopiayllufront.models.response.HomeResponse;
+import com.yopiayllufront.models.response.IntegrantesResponse;
+import com.yopiayllufront.utils.EntityModel;
 import com.yopiayllufront.models.Integrantes;
-import com.yopiayllufront.repositories.FamiliasRepository;
 import com.yopiayllufront.repositories.IntegrantesRepository;
 import com.yopiayllufront.services.IntegrantesService;
+import com.yopiayllufront.utils.InvalidDataExeption;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -24,9 +25,22 @@ public class IntegrantesController {
     @Autowired
     IntegrantesService integrantesService;
 
-    @PostMapping("familia")
-    public Map<String, Object> registrar_integrante(@RequestBody EntityModel<Integrantes> aux){
-        return integrantesService.integrantes_familia(aux.getCodigofamiliar(),aux.getModel());
+    /*@PostMapping("familia")
+    public ResponseEntity<IntegrantesResponse> registrar_integrante(@Valid @RequestBody EntityModel<Integrantes> aux, BindingResult result){
+        if (result.hasErrors()){
+            throw new InvalidDataExeption(result);
+        }
+        IntegrantesResponse integrante = integrantesService.integrantes_familia(aux.getCodigofamiliar(),aux.getModel());
+        return ResponseEntity.status(HttpStatus.CREATED).body(integrante);
+    }*/
+
+    @PostMapping("familia/{codigo]")
+    public ResponseEntity<IntegrantesResponse> registrar_integrante(@PathVariable("codigo") int codigo, @Valid @RequestBody Integrantes aux, BindingResult result){
+        if (result.hasErrors()){
+            throw new InvalidDataExeption(result);
+        }
+        IntegrantesResponse integrante = integrantesService.integrantes_familia(codigo,aux);
+        return ResponseEntity.status(HttpStatus.CREATED).body(integrante);
     }
 
     @GetMapping("familia/{codigo}")
@@ -35,7 +49,7 @@ public class IntegrantesController {
     }
 
     @GetMapping("home/{codigo}")
-    public Map<String, Object> integrantes_familia(@PathVariable("codigo") int codigofamiliar){
+    public HomeResponse integrantes_familia(@PathVariable("codigo") int codigofamiliar){
         return integrantesService.getAllIntegrantesByCodigo(codigofamiliar) ;
     }
 

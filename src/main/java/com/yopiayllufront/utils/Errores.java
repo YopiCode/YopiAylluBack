@@ -1,4 +1,4 @@
-package com.yopiayllufront.models;
+package com.yopiayllufront.utils;
 
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package com.yopiayllufront.models;
+package com.yopiayllufront.utils;
 
 import lombok.Data;
 
@@ -6,6 +6,4 @@ import lombok.Data;
 public class EntityModel<E> {
     private int codigofamiliar;
     private E model;
-
-
 }

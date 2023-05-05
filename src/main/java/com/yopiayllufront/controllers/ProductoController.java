@@ -1,15 +1,13 @@
 package com.yopiayllufront.controllers;
 
-import com.yopiayllufront.models.EntityModel;
-import com.yopiayllufront.models.Errores;
+import com.yopiayllufront.utils.EntityModel;
+import com.yopiayllufront.utils.Errores;
 import com.yopiayllufront.models.Familias;
 import com.yopiayllufront.models.Producto;
 import com.yopiayllufront.repositories.ProductoRepository;
 import com.yopiayllufront.services.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 public class ProductoController {

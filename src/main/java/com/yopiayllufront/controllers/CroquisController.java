@@ -1,19 +1,12 @@
 package com.yopiayllufront.controllers;
 
 import com.yopiayllufront.models.Croquis;
-import com.yopiayllufront.models.Errores;
+import com.yopiayllufront.utils.Errores;
 import com.yopiayllufront.models.Familias;
 import com.yopiayllufront.services.CroquisService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.util.HashMap;
 
 @RestController
 public class CroquisController {

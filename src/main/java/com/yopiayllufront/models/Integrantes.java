@@ -1,10 +1,15 @@
 package com.yopiayllufront.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import jakarta.validation.constraints.*;
+import lombok.*;
 
 @Entity
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Integrantes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,19 +18,35 @@ public class Integrantes {
     @JoinColumn(name = "idfamilia",nullable = false)
     private Familias familias;
     @Column(nullable = false, length = 20)
+    @NotNull
+    @NotBlank(message = "El nombre no debe ser vacio")
     private String nombres;
     @Column(nullable = false, length = 20)
+    @NotNull
     private String apellidos;
+    @Column(nullable = false, unique = true)
+    @NotNull
+    @NotNull(message = "El dni no puede ser nulo")
+    @Min(value = 10000000, message = "Debe de ingresar un dni de 8 digitos")
+    @Max(value = 99999999, message = "Debe de ingresar un dni de 8 digitos")
+    private Integer dni;
+    @NotNull
     @Column(nullable = false)
-    private int dni;
+    private Integer telefono;
+    @NotNull
     @Column(nullable = false)
-    private int telefono;
+    private Boolean lider;
+    @NotNull
     @Column(nullable = false)
-    private boolean lider;
+    private Boolean discapacitado;
+    @NotNull
     @Column(nullable = false)
-    private boolean discapacitado;
-    @Column(nullable = false)
-    private boolean mascota;
+    private Boolean mascota;
+    @NotNull
     @Column(nullable = false)
     private String roles;
+
+    public Integrantes(Integer dni) {
+        this.dni = dni;
+    }
 }

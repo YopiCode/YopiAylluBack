@@ -1,7 +1,7 @@
 package com.yopiayllufront.services;
 
-import com.yopiayllufront.models.EntityModel;
-import com.yopiayllufront.models.Errores;
+import com.yopiayllufront.utils.EntityModel;
+import com.yopiayllufront.utils.Errores;
 import com.yopiayllufront.models.Familias;
 import com.yopiayllufront.models.Producto;
 //import com.yopiayllufront.repositories.MochilaRepository;
@@ -9,9 +9,6 @@ import com.yopiayllufront.repositories.FamiliasRepository;
 import com.yopiayllufront.repositories.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class  ProductoService {

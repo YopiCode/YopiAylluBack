@@ -1,13 +1,17 @@
 package com.yopiayllufront.services;
 
-import com.yopiayllufront.models.Errores;
+import com.yopiayllufront.utils.Errores;
 import com.yopiayllufront.models.Familias;
 import com.yopiayllufront.models.Integrantes;
 import com.yopiayllufront.repositories.FamiliasRepository;
 import com.yopiayllufront.repositories.IntegrantesRepository;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import javax.security.auth.login.LoginException;
 import java.util.HashMap;
 
 @Service
@@ -22,32 +26,21 @@ public class FamiliasService {
     @Autowired
     IntegrantesRepository integrantesRepository;
 
-    public Errores login_familia(Familias familias){
-
-        boolean aux = familiaRepository.existsByCodigofamiliarAndAndContrasena(familias.getCodigofamiliar(),familias.getContrasena());
-        if (aux == true){
-            errores.setError(false);
-            errores.setDetalle("Credenciales Correctas");
-        }else {
-            errores.setError(true);
-            errores.setDetalle("Credenciales Erroneas");
+    @SneakyThrows
+    public Boolean login_familia(Familias familias){
+        Familias example = new Familias(familias.getCodigofamiliar(), familias.getContrasena());
+        if (!familiaRepository.exists(Example.of(example))){
+            throw new LoginException("Las credenciales son incorrectas");
         }
-        return errores;
-
+        return true;
     }
 
-    public Errores registrar_familia(Familias familias){
-
-        if (familias == null){
-            errores.setError(true);
-            errores.setDetalle("Error de Registro");
-        }else {
-            errores.setError(false);
-            errores.setDetalle("Registro Exitoso");
-            familiaRepository.save(familias);
+    public Boolean registrar_familia(Familias familias){
+        Familias example = new Familias(familias.getCodigofamiliar());
+        if (familiaRepository.exists(Example.of(example))){
+            throw new DuplicateKeyException("Ya esta registrado el codigo "+familias.getCodigofamiliar());
         }
-        return errores;
-
+        return true;
     }
 
     public Object detalles_Hogar(int codigo){
