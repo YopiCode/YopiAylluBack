@@ -1,9 +1,7 @@
 package com.yopiayllufront.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Entity
@@ -16,18 +14,23 @@ public class Familias {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @Column(nullable = false, length = 20)
-    @NotNull
+    @NotBlank(message = "El nombre de la Familia no puede quedar en blanco")
     private String nombrefamilia;
+
     @Column(nullable = false, unique = true)
     @NotNull
-    @Size(min = 4, max = 4, message = "El codigo debe ser de 4 digitos")
+    @Min(value = 1000, message = "El codigo debe ser de 4 digitos")
+    @Max(value = 9999, message = "El codigo debe ser de 4 digitos")
     private Integer codigofamiliar;
+
     @Column(nullable = false)
-    @NotNull
+    @NotBlank(message = "Por favor escriba una Contraseña")
     private Integer contrasena;
+
     @Column(nullable = false, length = 50)
-    @NotNull
+    @NotBlank(message = "Por favor escriba una Direccion")
     private String direccion;
 
     public Familias(Integer codigofamiliar) {

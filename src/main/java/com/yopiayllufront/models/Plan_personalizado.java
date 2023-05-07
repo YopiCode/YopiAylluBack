@@ -1,6 +1,7 @@
 package com.yopiayllufront.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Entity
@@ -13,5 +14,6 @@ public class Plan_personalizado {
     @JoinColumn(name = "idfamilia",nullable = false)
     private Familias familias;
     @Column(nullable = false,length = 400)
+    @NotBlank(message = "Por compo de Plan no puede ser vacio")
     private String plan;
 }
