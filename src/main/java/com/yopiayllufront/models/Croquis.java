@@ -12,7 +12,8 @@ public class Croquis {
     @ManyToOne
     @JoinColumn(name = "idfamilia",nullable = false)
     private Familias familias;
-    @Column(nullable = false,columnDefinition = "LONGBLOB")
+    @Lob
+    @Column(nullable = false, columnDefinition = "LONGBLOB")
     private byte[] mapa;
     @Column(nullable = false)
     private int piso;

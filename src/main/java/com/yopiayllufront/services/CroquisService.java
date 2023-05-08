@@ -1,20 +1,21 @@
 package com.yopiayllufront.services;
 
 import com.yopiayllufront.models.Croquis;
-import com.yopiayllufront.utils.Errores;
 import com.yopiayllufront.models.Familias;
 import com.yopiayllufront.repositories.CroquisRepository;
 import com.yopiayllufront.repositories.FamiliasRepository;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.io.ByteArrayOutputStream;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Service
 public class CroquisService {
@@ -25,55 +26,45 @@ public class CroquisService {
     @Autowired
     CroquisRepository croquisRepository;
 
-    private Errores error = new Errores();
-
-    public Errores reguistrarCroquis(MultipartFile multipartFile, int codigo_familiar){
-        Familias familias = familiasRepository.findByCodigofamiliar(codigo_familiar);
-        if (familias == null){
-            error.setError(true);
-            error.setDetalle("Error en la Carga");
-        }else {
-            Croquis croquis = new Croquis();
-            croquis.setFamilias(familias);
-            croquis.setPiso(1);
-            byte[] mapa = null;
-            try {
-                mapa = multipartFile.getBytes();
-                croquis.setMapa(multipartFile.getBytes());
-                croquisRepository.save(croquis);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.IMAGE_PNG);
-            headers.setContentLength(mapa.length);
-            new ResponseEntity<>(mapa, headers, HttpStatus.OK);
-            error.setError(false);
-            error.setDetalle("Carga Correcta");
-        }
-        return error;
-
+    public ResponseEntity<Croquis> reguistrarCroquis(int codigo, Croquis request) {
+        Familias familias = familiasRepository.findByCodigofamiliar(codigo);
+        request.setFamilias(familias);
+        return new ResponseEntity<>(croquisRepository.save(request), HttpStatus.OK);
     }
 
-    public Object obtenerCroquis(int codigo_familiar){
+    @SneakyThrows
+    public ResponseEntity<byte[]> obtenerCroquis(int codigo_familiar) {
         List<Croquis> croquisList = croquisRepository.getCroquisByFamilias_Codigofamiliar(codigo_familiar);
 
-        if (croquisList == null){
-            error.setError(true);
-            error.setDetalle("Error de Carga");
-            return error;
-        }else {
-
-            return croquisList;
+        if (croquisList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ZipOutputStream zos = new ZipOutputStream(baos);
+
+        for (Croquis croquis : croquisList) {
+            ZipEntry entry = new ZipEntry("croquis-" + croquis.getId() + ".png");
+            zos.putNextEntry(entry);
+            zos.write(croquis.getMapa());
+            zos.closeEntry();
+        }
+
+        zos.close();
+
+        byte[] zipBytes = baos.toByteArray();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", "croquis.zip");
+
+        return new ResponseEntity<>(zipBytes, headers, HttpStatus.OK);
     }
 
 
-    public Errores deleteCroquis(int codigoPiso){
-        error.setError(false);
-        error.setDetalle("Croquis Eliminado");
-        croquisRepository.deleteById(codigoPiso);
-        return error;
+    public int deleteCroquis(int id){
+        croquisRepository.deleteById(id);
+        return id;
     }
 
 
