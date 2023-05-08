@@ -41,7 +41,6 @@ public class Integrantes {
     private Integer telefono;
 
     @Column(nullable = false)
-    @NotNull
     private Boolean lider;
 
     @Column(nullable = false)

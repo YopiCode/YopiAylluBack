@@ -26,8 +26,8 @@ public class Familias {
     private Integer codigofamiliar;
 
     @Column(nullable = false)
-    @NotBlank(message = "Por favor escriba una Contraseña")
-    private Integer contrasena;
+    @NotBlank(message = "La contraseña no debe estar vacia")
+    private String contrasena;
 
     @Column(nullable = false, length = 50)
     @NotBlank(message = "Por favor escriba una Direccion")
@@ -37,7 +37,7 @@ public class Familias {
         this.codigofamiliar = codigofamiliar;
     }
 
-    public Familias(Integer codigofamiliar, Integer contrasena) {
+    public Familias(Integer codigofamiliar, String contrasena) {
         this.codigofamiliar = codigofamiliar;
         this.contrasena = contrasena;
     }

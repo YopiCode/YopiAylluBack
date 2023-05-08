@@ -8,10 +8,14 @@ import com.yopiayllufront.models.Familias;
 import com.yopiayllufront.models.Integrantes;
 import com.yopiayllufront.repositories.FamiliasRepository;
 import com.yopiayllufront.repositories.IntegrantesRepository;
+import com.yopiayllufront.utils.InvalidDataExeption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Example;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,21 +35,22 @@ public class IntegrantesService {
     private Errores errores = new Errores();
 
 
-    public IntegrantesResponse integrantes_familia(int cod_familiar, Integrantes integrantes) {
+    public ResponseEntity<IntegrantesResponse> integrantes_familia(int cod_familiar, Integrantes integrantes, BindingResult result) {
         int var = integrantesRepository.countIntegrantesByFamilias_Codigofamiliar(cod_familiar);
         integrantes.setFamilias(familiasRepository.findByCodigofamiliar(cod_familiar));
         integrantes.setLider(var == 0);
-
         if (integrantes.getDni() < 10000000 || integrantes.getDni() > 100000000) {
             throw new IllegalArgumentException("Ingrese un dni de 8 digitos");
         }
-
         Integrantes example = new Integrantes(integrantes.getDni());
         if (integrantesRepository.exists(Example.of(example))) {
             throw new DuplicateKeyException("Ya existe el DNI " + example.getDni());
         }
-
-        return new IntegrantesResponse(integrantesRepository.save(integrantes));
+        if (result.hasErrors()){
+            throw new InvalidDataExeption(result);
+        }
+        IntegrantesResponse inteRpt = new IntegrantesResponse(integrantesRepository.save(integrantes));
+        return ResponseEntity.status(HttpStatus.CREATED).body(inteRpt);
     }
 
 

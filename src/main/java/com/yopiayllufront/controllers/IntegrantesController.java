@@ -34,13 +34,9 @@ public class IntegrantesController {
         return ResponseEntity.status(HttpStatus.CREATED).body(integrante);
     }*/
 
-    @PostMapping("familia/{codigo]")
+    @PostMapping("familia/{codigo}")
     public ResponseEntity<IntegrantesResponse> registrar_integrante(@PathVariable("codigo") int codigo, @Valid @RequestBody Integrantes aux, BindingResult result){
-        if (result.hasErrors()){
-            throw new InvalidDataExeption(result);
-        }
-        IntegrantesResponse integrante = integrantesService.integrantes_familia(codigo,aux);
-        return ResponseEntity.status(HttpStatus.CREATED).body(integrante);
+        return integrantesService.integrantes_familia(codigo,aux,result);
     }
 
     @GetMapping("familia/{codigo}")
