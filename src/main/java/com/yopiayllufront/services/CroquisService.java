@@ -1,6 +1,6 @@
 package com.yopiayllufront.services;
 
-import com.yopiayllufront.models.Croquis;
+import com.yopiayllufront.models.CroquisModel;
 import com.yopiayllufront.models.Familias;
 import com.yopiayllufront.repositories.CroquisRepository;
 import com.yopiayllufront.repositories.FamiliasRepository;
@@ -26,7 +26,7 @@ public class CroquisService {
     @Autowired
     CroquisRepository croquisRepository;
 
-    public ResponseEntity<Croquis> reguistrarCroquis(int codigo, Croquis request) {
+    public ResponseEntity<CroquisModel> reguistrarCroquis(int codigo, CroquisModel request) {
         Familias familias = familiasRepository.findByCodigofamiliar(codigo);
         request.setFamilias(familias);
         return new ResponseEntity<>(croquisRepository.save(request), HttpStatus.OK);
@@ -34,7 +34,7 @@ public class CroquisService {
 
     @SneakyThrows
     public ResponseEntity<byte[]> obtenerCroquis(int codigo_familiar) {
-        List<Croquis> croquisList = croquisRepository.getCroquisByFamilias_Codigofamiliar(codigo_familiar);
+        List<CroquisModel> croquisList = croquisRepository.getCroquisByFamilias_Codigofamiliar(codigo_familiar);
 
         if (croquisList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -43,7 +43,7 @@ public class CroquisService {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ZipOutputStream zos = new ZipOutputStream(baos);
 
-        for (Croquis croquis : croquisList) {
+        for (CroquisModel croquis : croquisList) {
             ZipEntry entry = new ZipEntry("croquis-" + croquis.getId() + ".png");
             zos.putNextEntry(entry);
             zos.write(croquis.getMapa());

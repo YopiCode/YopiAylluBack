@@ -1,6 +1,6 @@
 package com.yopiayllufront.controllers;
 
-import com.yopiayllufront.models.Croquis;
+import com.yopiayllufront.models.CroquisModel;
 import com.yopiayllufront.services.CroquisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,8 @@ public class CroquisController {
     CroquisService croquisService;
 
     @PostMapping("/{codigo}")
-    public ResponseEntity<Croquis> registrarPiso(@PathVariable("codigo") int codigo, @RequestBody Croquis request) {
+    public ResponseEntity<CroquisModel> registrarPiso(@PathVariable("codigo") int codigo, @RequestBody CroquisModel request) {
+
         return croquisService.reguistrarCroquis(codigo, request);
     }
 

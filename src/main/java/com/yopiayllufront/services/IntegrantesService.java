@@ -84,19 +84,9 @@ public class IntegrantesService {
         }
     }
 
-    public Object eliminar_integrante(int idintegrante) {
-
-        Integrantes aux = integrantesRepository.searchById(idintegrante);
-        if (aux == null) {
-            errores.setDetalle("Error de Peticion");
-            errores.setError(true);
-        } else {
-            errores.setDetalle("Peticion Aceptada");
-            errores.setError(false);
-        }
-        return errores;
-
-
+    public int eliminar_integrante(int idintegrante) {
+        integrantesRepository.deleteById(idintegrante);
+        return idintegrante;
     }
 
 }

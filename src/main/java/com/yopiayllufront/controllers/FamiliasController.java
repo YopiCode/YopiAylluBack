@@ -13,15 +13,7 @@ public class FamiliasController {
     @Autowired
     FamiliasService familiasService;
 
-    @PostMapping("registrar")
-    public ResponseEntity<Familias> registrar_familiar(@RequestBody Familias familias, BindingResult result){
-        return familiasService.registrar_familia(familias,result);
-    }
 
-    @PostMapping("ingresar")
-    public ResponseEntity<Familias> ingresar(@RequestBody Familias familias, BindingResult result){
-        return familiasService.login_familia(familias, result);
-    }
 
     @GetMapping("hogar/{codigo}")
     public Object hogar(@PathVariable("codigo") int codigofamiliar){

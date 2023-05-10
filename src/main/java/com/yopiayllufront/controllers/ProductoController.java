@@ -18,14 +18,15 @@ public class ProductoController {
     @Autowired
     ProductoRepository productoRepository;
 
-    @PostMapping("producto")
-    public Producto registrarProducto(@RequestBody EntityModel<Producto> entityModel){
-        return productoService.registrarProducto(entityModel);
+    @PostMapping("producto/{codigo}")
+    public Producto registrarProducto(@PathVariable("codigo") int codigo, @RequestBody Producto producto){
+        System.out.println(producto);
+        return productoService.registrarProducto(codigo, producto);
     }
 
-    @GetMapping("producto")
-    public Object obtenerProducto(@RequestBody Familias familias){
-        return productoService.mostrarProducto(familias);
+    @GetMapping("producto/{codigo}")
+    public Object obtenerProducto(@PathVariable("codigo") int codigo){
+        return productoService.mostrarProducto(codigo);
 
     }
 

@@ -13,9 +13,9 @@ public class RutasController {
     @Autowired
     RutasService rutasService;
 
-    @PostMapping("zona")
-    public Rutas reguistroRuta(@RequestBody EntityModel<Rutas> entityModel){
-        return rutasService.reguistroZona(entityModel);
+    @PostMapping("zona/{codigo}")
+    public Rutas reguistroRuta(@PathVariable("codigo") int codigo, @RequestBody Rutas request){
+        return rutasService.reguistroZona(codigo, request);
     }
 
     @GetMapping("zona/{codigo}")

@@ -20,19 +20,15 @@ public class  ProductoService {
     FamiliasRepository familiasRepository;
 
     private Errores errores = new Errores();
-    public Producto registrarProducto(EntityModel<Producto> entityModel){
-        Producto producto = entityModel.getModel();
-        producto.setFamilias(familiasRepository.findByCodigofamiliar(entityModel.getCodigofamiliar()));
-        productoRepository.save(producto);
-        producto.setFamilias(null);
-        return producto;
+    public Producto registrarProducto(int codigo, Producto request){
+        request.setFamilias(familiasRepository.findByCodigofamiliar(codigo));
+        productoRepository.save(request);
+        request.setFamilias(null);
+        return request;
     }
 
-    public Object mostrarProducto(Familias familias){
-        return productoRepository.searchProductosByFamilias_Codigofamiliar(familias.getCodigofamiliar()).stream().map(item -> {
-            item.setFamilias(null);
-            return item;
-        });
+    public Object mostrarProducto(int codigo){
+        return productoRepository.searchProductosByFamilias_Codigofamiliar(codigo).stream().peek(item -> item.setFamilias(null));
     }
 
     public Errores eliminarProducto(Producto producto) {

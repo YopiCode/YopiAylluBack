@@ -49,9 +49,9 @@ public class IntegrantesController {
         return integrantesService.getAllIntegrantesByCodigo(codigofamiliar) ;
     }
 
-    @DeleteMapping("familia")
-    private Object delete_familia(@RequestBody Integrantes integrantes){
-        return integrantesService.eliminar_integrante(integrantes.getId());
+    @DeleteMapping("familia/{id}")
+    private int delete_familia(@PathVariable("id") int id){
+        return integrantesService.eliminar_integrante(id);
     }
 
 }

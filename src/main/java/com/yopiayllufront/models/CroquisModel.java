@@ -1,11 +1,11 @@
 package com.yopiayllufront.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 @Entity
-@Data
-public class Croquis {
+@Getter @Setter @AllArgsConstructor @NoArgsConstructor @ToString
+public class CroquisModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

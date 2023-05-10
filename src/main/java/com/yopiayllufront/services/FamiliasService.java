@@ -36,21 +36,21 @@ public class FamiliasService {
     BCryptPasswordEncoder encoder;
     @SneakyThrows
     public ResponseEntity<Familias> login_familia(Familias familias, BindingResult result){
-        Familias example = familiaRepository.findByCodigofamiliar(familias.getCodigofamiliar());
-        if (!(example ==null) && !(encoder.matches(familias.getContrasena(),example.getContrasena()))){
-            throw new LoginException("Las credenciales son incorrectas");
-        }
-
         if (result.hasErrors()){
             throw new InvalidDataExeption(result);
+        }
+        Familias example = familiaRepository.findByCodigofamiliar(familias.getCodigofamiliar());
+        if (example == null){
+            throw new LoginException("No existe el usuario");
+        }
+        if (!(encoder.matches(familias.getContrasena(),example.getContrasena()))){
+            throw new LoginException("Las credenciales son incorrectas");
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(familias);
     }
 
 
     public ResponseEntity<Familias> registrar_familia(Familias familias, BindingResult result){
-
-
         Familias example = new Familias(familias.getCodigofamiliar());
         if (familiaRepository.exists(Example.of(example))){
             throw new DuplicateKeyException("Ya esta registrado el codigo "+familias.getCodigofamiliar());

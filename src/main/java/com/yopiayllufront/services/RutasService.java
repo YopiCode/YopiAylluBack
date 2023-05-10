@@ -19,11 +19,11 @@ public class RutasService {
 
     private Errores errores = new Errores();
 
-    public Rutas reguistroZona(EntityModel<Rutas> entityModel){
-        entityModel.getModel().setFamilias(familiasRepository.findByCodigofamiliar(1234));
-        rutasRepository.save(entityModel.getModel());
-        entityModel.getModel().setFamilias(null);
-        return entityModel.getModel();
+    public Rutas reguistroZona(int codigo, Rutas request){
+        request.setFamilias(familiasRepository.findByCodigofamiliar(codigo));
+        rutasRepository.save(request);
+        request.setFamilias(null);
+        return request;
     }
 
     public Object MostrarZona(int codigo){
