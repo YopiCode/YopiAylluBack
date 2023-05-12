@@ -1,12 +1,12 @@
 package com.yopiayllufront.repositories;
 
-import com.yopiayllufront.models.Pasos;
+import com.yopiayllufront.models.PasosModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.ArrayList;
 
-public interface PasosRepository extends JpaRepository<Pasos, Integer> {
+public interface PasosRepository extends JpaRepository<PasosModel, Integer> {
 
-    ArrayList<Pasos> findAllByPlanes_Id(int id);
+    ArrayList<PasosModel> findAllByPlanes_Id(int id);
 
 }

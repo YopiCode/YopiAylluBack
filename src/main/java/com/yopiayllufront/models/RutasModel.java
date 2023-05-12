@@ -6,13 +6,13 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Rutas {
+public class RutasModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @ManyToOne
     @JoinColumn(name = "idfamilia",nullable = false)
-    private Familias familias;
+    private FamiliasModel familias;
 
     @Column(nullable = false,length = 200)
     @NotBlank(message = "El nombre no puede estar Vacio")

@@ -1,7 +1,7 @@
 package com.yopiayllufront.services;
 
 import com.yopiayllufront.models.CroquisModel;
-import com.yopiayllufront.models.Familias;
+import com.yopiayllufront.models.FamiliasModel;
 import com.yopiayllufront.repositories.CroquisRepository;
 import com.yopiayllufront.repositories.FamiliasRepository;
 import lombok.SneakyThrows;
@@ -27,7 +27,7 @@ public class CroquisService {
     CroquisRepository croquisRepository;
 
     public ResponseEntity<CroquisModel> reguistrarCroquis(int codigo, CroquisModel request) {
-        Familias familias = familiasRepository.findByCodigofamiliar(codigo);
+        FamiliasModel familias = familiasRepository.findByCodigofamiliar(codigo);
         request.setFamilias(familias);
         return new ResponseEntity<>(croquisRepository.save(request), HttpStatus.OK);
     }

@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity @Setter @Getter @AllArgsConstructor @NoArgsConstructor @ToString
-public class Pasos {
+public class PasosModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,6 +13,6 @@ public class Pasos {
     private String paso;
     @ManyToOne
     @JoinColumn(name = "idplan", nullable = false)
-    private Planes planes;
+    private PlanesModel planes;
 
 }

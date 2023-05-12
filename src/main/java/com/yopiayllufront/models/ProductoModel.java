@@ -8,13 +8,13 @@ import java.sql.Date;
 
 @Entity
 @Data
-public class Producto {
+public class ProductoModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @ManyToOne
     @JoinColumn(name = "idfamilia",nullable = false)
-    private Familias familias;
+    private FamiliasModel familias;
 
     @Column(nullable = false,length = 50)
     @NotBlank(message = "El nombre no puede estar vacio")

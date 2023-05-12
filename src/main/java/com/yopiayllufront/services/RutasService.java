@@ -1,8 +1,7 @@
 package com.yopiayllufront.services;
 
-import com.yopiayllufront.utils.EntityModel;
 import com.yopiayllufront.utils.Errores;
-import com.yopiayllufront.models.Rutas;
+import com.yopiayllufront.models.RutasModel;
 import com.yopiayllufront.repositories.FamiliasRepository;
 import com.yopiayllufront.repositories.RutasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ public class RutasService {
 
     private Errores errores = new Errores();
 
-    public Rutas reguistroZona(int codigo, Rutas request){
+    public RutasModel reguistroZona(int codigo, RutasModel request){
         request.setFamilias(familiasRepository.findByCodigofamiliar(codigo));
         rutasRepository.save(request);
         request.setFamilias(null);

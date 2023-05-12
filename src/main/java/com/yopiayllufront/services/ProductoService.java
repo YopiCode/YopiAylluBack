@@ -1,9 +1,7 @@
 package com.yopiayllufront.services;
 
-import com.yopiayllufront.utils.EntityModel;
 import com.yopiayllufront.utils.Errores;
-import com.yopiayllufront.models.Familias;
-import com.yopiayllufront.models.Producto;
+import com.yopiayllufront.models.ProductoModel;
 //import com.yopiayllufront.repositories.MochilaRepository;
 import com.yopiayllufront.repositories.FamiliasRepository;
 import com.yopiayllufront.repositories.ProductoRepository;
@@ -20,7 +18,7 @@ public class  ProductoService {
     FamiliasRepository familiasRepository;
 
     private Errores errores = new Errores();
-    public Producto registrarProducto(int codigo, Producto request){
+    public ProductoModel registrarProducto(int codigo, ProductoModel request){
         request.setFamilias(familiasRepository.findByCodigofamiliar(codigo));
         productoRepository.save(request);
         request.setFamilias(null);
@@ -31,8 +29,8 @@ public class  ProductoService {
         return productoRepository.searchProductosByFamilias_Codigofamiliar(codigo).stream().peek(item -> item.setFamilias(null));
     }
 
-    public Errores eliminarProducto(Producto producto) {
-        productoRepository.deleteById(producto.getId());
+    public Errores eliminarProducto( int id) {
+        productoRepository.deleteById(id);
         errores.setDetalle("Producto Eliminado Exitosamente");
         errores.setError(false);
         return errores;

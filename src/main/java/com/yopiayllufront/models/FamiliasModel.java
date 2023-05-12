@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Familias {
+public class FamiliasModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -33,11 +33,11 @@ public class Familias {
     @NotBlank(message = "Por favor escriba una Direccion")
     private String direccion;
 
-    public Familias(Integer codigofamiliar) {
+    public FamiliasModel(Integer codigofamiliar) {
         this.codigofamiliar = codigofamiliar;
     }
 
-    public Familias(Integer codigofamiliar, String contrasena) {
+    public FamiliasModel(Integer codigofamiliar, String contrasena) {
         this.codigofamiliar = codigofamiliar;
         this.contrasena = contrasena;
     }

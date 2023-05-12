@@ -11,7 +11,7 @@ public class CroquisModel {
     private Integer id;
     @ManyToOne
     @JoinColumn(name = "idfamilia",nullable = false)
-    private Familias familias;
+    private FamiliasModel familias;
     @Lob
     @Column(nullable = false, columnDefinition = "LONGBLOB")
     private byte[] mapa;

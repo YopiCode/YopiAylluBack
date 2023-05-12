@@ -1,8 +1,12 @@
 package com.yopiayllufront.services;
 
+import com.yopiayllufront.models.CroquisModel;
+import com.yopiayllufront.models.response.HomeResponse;
+import com.yopiayllufront.models.response.IntegrantesHomeResponse;
+import com.yopiayllufront.models.response.LoginResponse;
 import com.yopiayllufront.utils.Errores;
-import com.yopiayllufront.models.Familias;
-import com.yopiayllufront.models.Integrantes;
+import com.yopiayllufront.models.FamiliasModel;
+import com.yopiayllufront.models.IntegrantesModel;
 import com.yopiayllufront.repositories.FamiliasRepository;
 import com.yopiayllufront.repositories.IntegrantesRepository;
 import com.yopiayllufront.utils.InvalidDataExeption;
@@ -11,14 +15,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Example;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 import javax.security.auth.login.LoginException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FamiliasService {
@@ -35,49 +41,79 @@ public class FamiliasService {
     @Autowired
     BCryptPasswordEncoder encoder;
     @SneakyThrows
-    public ResponseEntity<Familias> login_familia(Familias familias, BindingResult result){
+    public ResponseEntity<LoginResponse> login_familia(FamiliasModel familias, BindingResult result){
         if (result.hasErrors()){
             throw new InvalidDataExeption(result);
         }
-        Familias example = familiaRepository.findByCodigofamiliar(familias.getCodigofamiliar());
+        FamiliasModel example = familiaRepository.findByCodigofamiliar(familias.getCodigofamiliar());
         if (example == null){
             throw new LoginException("No existe el usuario");
         }
         if (!(encoder.matches(familias.getContrasena(),example.getContrasena()))){
             throw new LoginException("Las credenciales son incorrectas");
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(familias);
+        //Obj de Consulta
+        FamiliasModel familiasModel = familiaRepository.findByCodigofamiliar(familias.getCodigofamiliar());
+
+        //Obj de Respuesta
+        LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setCodigofamiliar(familiasModel.getCodigofamiliar());
+        loginResponse.setNombrefamilia(familiasModel.getNombrefamilia());
+        IntegrantesModel integrantesModel = integrantesRepository.searchByLider(true);
+        loginResponse.setLider((integrantesModel == null) ? null  : integrantesModel.getNombres());
+        loginResponse.setCantidad(integrantesRepository.countIntegrantesByFamilias_Codigofamiliar(familiasModel.getCodigofamiliar()));
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(loginResponse);
     }
 
 
-    public ResponseEntity<Familias> registrar_familia(Familias familias, BindingResult result){
-        Familias example = new Familias(familias.getCodigofamiliar());
+    public ResponseEntity<LoginResponse> registrar_familia(FamiliasModel familias, BindingResult result){
+        FamiliasModel example = new FamiliasModel(familias.getCodigofamiliar());
         if (familiaRepository.exists(Example.of(example))){
             throw new DuplicateKeyException("Ya esta registrado el codigo "+familias.getCodigofamiliar());
         }
         if (result.hasErrors()){
             throw new InvalidDataExeption(result);
         }
-        Familias security = familias;
+        FamiliasModel security = familias;
         security.setContrasena(encoder.encode(familias.getContrasena()));
         familiaRepository.save(security);
-        return ResponseEntity.status(HttpStatus.CREATED).body(familias);
+
+        FamiliasModel familiasModel = familiaRepository.findByCodigofamiliar(familias.getCodigofamiliar());
+
+        //Obj de Respuesta
+        LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setCodigofamiliar(familiasModel.getCodigofamiliar());
+        loginResponse.setNombrefamilia(familiasModel.getNombrefamilia());
+        IntegrantesModel integrantesModel = integrantesRepository.searchByLider(true);
+        loginResponse.setLider((integrantesModel == null) ? null  : integrantesModel.getNombres());
+        loginResponse.setCantidad(integrantesRepository.countIntegrantesByFamilias_Codigofamiliar(familiasModel.getCodigofamiliar()));
+
+
+
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(loginResponse);
     }
 
-    public Object detalles_Hogar(int codigo){
+    public ResponseEntity<Object> detalles_Hogar(int codigo, BindingResult result){
+
         boolean aux = familiaRepository.existsByCodigofamiliar(codigo);
-        if (aux == false){
-            errores.setError(true);
-            errores.setDetalle("Error detalle Hogar");
-            return errores;
+        if (aux == false || result.hasErrors()){
+            throw new InvalidDataExeption(result);
         }else {
-            Integrantes integrantes =  integrantesRepository.findByLiderAndFamilias_Codigofamiliar(true, codigo);
-            json.put("cantidad",integrantesRepository.countByFamilias_Codigofamiliar(codigo));
-            json.put("codigofamiliar",integrantes.getFamilias().getCodigofamiliar());
-            json.put("lider",integrantes.getNombres());
-            json.put("nombrefamilia",integrantes.getFamilias().getNombrefamilia());
-            return json;
+            FamiliasModel familiasModel = familiaRepository.findByCodigofamiliar(codigo);
+
+            //Obj de Respuesta
+            LoginResponse loginResponse = new LoginResponse();
+            loginResponse.setCodigofamiliar(familiasModel.getCodigofamiliar());
+            loginResponse.setNombrefamilia(familiasModel.getNombrefamilia());
+            IntegrantesModel integrantesModel = integrantesRepository.searchByLider(true);
+            loginResponse.setLider((integrantesModel == null) ? null  : integrantesModel.getNombres());
+            loginResponse.setCantidad(integrantesRepository.countIntegrantesByFamilias_Codigofamiliar(familiasModel.getCodigofamiliar()));
+
+            return new ResponseEntity<>(loginResponse,HttpStatus.OK);
         }
+
     }
 
 }

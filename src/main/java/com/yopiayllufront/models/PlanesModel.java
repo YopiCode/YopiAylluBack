@@ -6,13 +6,13 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Planes {
+public class PlanesModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @ManyToOne
     @JoinColumn(name = "idfamilia",nullable = false)
-    private Familias familias;
+    private FamiliasModel familias;
     @Column(nullable = false,length = 20)
     @NotBlank(message = "Por compo de Plan no puede ser vacio")
     private String nombre;

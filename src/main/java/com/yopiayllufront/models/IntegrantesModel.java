@@ -10,13 +10,13 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Integrantes {
+public class IntegrantesModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @ManyToOne
     @JoinColumn(name = "idfamilia",nullable = false)
-    private Familias familias;
+    private FamiliasModel familias;
 
     @Column(nullable = false, length = 20)
     @NotNull
@@ -55,7 +55,7 @@ public class Integrantes {
     @NotBlank(message = "El compo de Roles no puede estar Vacio")
     private String roles;
 
-    public Integrantes(Integer dni) {
+    public IntegrantesModel(Integer dni) {
         this.dni = dni;
     }
 }

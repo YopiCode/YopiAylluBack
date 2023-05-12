@@ -1,16 +1,15 @@
 package com.yopiayllufront.repositories;
 
-import com.yopiayllufront.models.Rutas;
+import com.yopiayllufront.models.RutasModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public interface RutasRepository extends JpaRepository<Rutas,Integer> {
+public interface RutasRepository extends JpaRepository<RutasModel,Integer> {
 
-    List<Rutas> findRutasByFamilias_Codigofamiliar(int codigo_familia);
+    List<RutasModel> findRutasByFamilias_Codigofamiliar(int codigo_familia);
 
     void deleteById(int id);
 

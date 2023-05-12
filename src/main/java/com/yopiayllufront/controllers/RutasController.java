@@ -1,8 +1,7 @@
 package com.yopiayllufront.controllers;
 
-import com.yopiayllufront.utils.EntityModel;
 import com.yopiayllufront.utils.Errores;
-import com.yopiayllufront.models.Rutas;
+import com.yopiayllufront.models.RutasModel;
 import com.yopiayllufront.services.RutasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +13,7 @@ public class RutasController {
     RutasService rutasService;
 
     @PostMapping("zona/{codigo}")
-    public Rutas reguistroRuta(@PathVariable("codigo") int codigo, @RequestBody Rutas request){
+    public RutasModel reguistroRuta(@PathVariable("codigo") int codigo, @RequestBody RutasModel request){
         return rutasService.reguistroZona(codigo, request);
     }
 
@@ -23,8 +22,8 @@ public class RutasController {
         return rutasService.MostrarZona(codigofamiliar);
     }
 
-    @DeleteMapping("zona")
-    public Errores deleteRuta(@RequestBody Rutas rutas){
-        return rutasService.eliminarZona(rutas.getId());
+    @DeleteMapping("zona/{id}")
+    public Errores deleteRuta(@PathVariable("id")int codigo){
+        return rutasService.eliminarZona(codigo);
     }
 }

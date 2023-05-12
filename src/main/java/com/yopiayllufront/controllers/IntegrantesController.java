@@ -2,19 +2,14 @@ package com.yopiayllufront.controllers;
 
 import com.yopiayllufront.models.response.HomeResponse;
 import com.yopiayllufront.models.response.IntegrantesResponse;
-import com.yopiayllufront.utils.EntityModel;
-import com.yopiayllufront.models.Integrantes;
+import com.yopiayllufront.models.IntegrantesModel;
 import com.yopiayllufront.repositories.IntegrantesRepository;
 import com.yopiayllufront.services.IntegrantesService;
-import com.yopiayllufront.utils.InvalidDataExeption;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 public class IntegrantesController {
@@ -35,7 +30,7 @@ public class IntegrantesController {
     }*/
 
     @PostMapping("familia/{codigo}")
-    public ResponseEntity<IntegrantesResponse> registrar_integrante(@PathVariable("codigo") int codigo, @Valid @RequestBody Integrantes aux, BindingResult result){
+    public ResponseEntity<IntegrantesResponse> registrar_integrante(@PathVariable("codigo") int codigo, @Valid @RequestBody IntegrantesModel aux, BindingResult result){
         return integrantesService.integrantes_familia(codigo,aux,result);
     }
 

@@ -1,6 +1,5 @@
 package com.yopiayllufront.controllers;
 
-import com.yopiayllufront.models.Planes;
 import com.yopiayllufront.models.response.PlanesResponse;
 import com.yopiayllufront.services.PlanesService;
 import org.springframework.beans.factory.annotation.Autowired;

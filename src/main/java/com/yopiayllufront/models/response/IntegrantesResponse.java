@@ -1,6 +1,6 @@
 package com.yopiayllufront.models.response;
 
-import com.yopiayllufront.models.Integrantes;
+import com.yopiayllufront.models.IntegrantesModel;
 import lombok.*;
 
 @Getter
@@ -19,7 +19,7 @@ public class IntegrantesResponse {
     private Boolean mascota;
     private String roles;
 
-    public IntegrantesResponse(Integrantes integrantes){
+    public IntegrantesResponse(IntegrantesModel integrantes){
         this.id = integrantes.getId();
         this.nombres = integrantes.getNombres();
         this.apellidos = integrantes.getApellidos();

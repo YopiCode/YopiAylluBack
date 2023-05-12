@@ -1,9 +1,7 @@
 package com.yopiayllufront.controllers;
 
-import com.yopiayllufront.utils.EntityModel;
 import com.yopiayllufront.utils.Errores;
-import com.yopiayllufront.models.Familias;
-import com.yopiayllufront.models.Producto;
+import com.yopiayllufront.models.ProductoModel;
 import com.yopiayllufront.repositories.ProductoRepository;
 import com.yopiayllufront.services.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +17,7 @@ public class ProductoController {
     ProductoRepository productoRepository;
 
     @PostMapping("producto/{codigo}")
-    public Producto registrarProducto(@PathVariable("codigo") int codigo, @RequestBody Producto producto){
+    public ProductoModel registrarProducto(@PathVariable("codigo") int codigo, @RequestBody ProductoModel producto){
         System.out.println(producto);
         return productoService.registrarProducto(codigo, producto);
     }
@@ -30,9 +28,9 @@ public class ProductoController {
 
     }
 
-    @DeleteMapping("producto")
-    public Errores deleteProducto(@RequestBody Producto producto){
-        return productoService.eliminarProducto(producto);
+    @DeleteMapping("producto/{id}")
+    public Errores deleteProducto(@PathVariable("id") int id){
+        return productoService.eliminarProducto(id);
     }
 
 
